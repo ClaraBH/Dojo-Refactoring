@@ -7,3 +7,108 @@ describe("Initial Test", () => {
     expect(items[0].name).toBe("foo");
   });
 });
+
+
+describe("GildedRose", () => {
+  describe("Normal Item", () => {
+    it("should decrease quality and sellIn for normal items", () => {
+      const gildedRose = new GildedRose([new Item("Normal Item", 10, 20)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(19);
+      expect(items[0].sellIn).toBe(9);
+    });
+
+    it("should not decrease quality below 0", () => {
+      const gildedRose = new GildedRose([new Item("Normal Item", 5, 0)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(0);
+    });
+
+    it("Normal items degrade twice as fast after sellIn <= 0", () => {
+      const gildedRose = new GildedRose([new Item("Normal Item", 0, 10)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(8);
+      expect(items[0].sellIn).toBe(-1);
+    });
+  });
+  
+  describe("Agent Brie", () => {
+    it("Aged Brie should increase in quality", () => {
+      const gildedRose = new GildedRose([new Item("Aged Brie", 2, 0)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(1);
+      expect(items[0].sellIn).toBe(1);
+    });
+
+    it("Aged Brie should not increase quality above 50", () => {
+      const gildedRose = new GildedRose([new Item("Aged Brie", 2, 50)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(50);
+    });
+
+    it("Aged Brie increases faster after expiration", () => {
+      const gildedRose = new GildedRose([new Item("Aged Brie", 0, 10)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(12); // +2 car expiré
+      expect(items[0].sellIn).toBe(-1);
+    });
+  });
+
+  describe("Sulfuras", () => {
+    it("Sulfuras should not decrease in quality or sellIn", () => {
+      const gildedRose = new GildedRose([
+        new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(80);
+      expect(items[0].sellIn).toBe(0);
+    });
+  });
+
+  describe("Backstage", () => {
+    it("Backstage passes should increase in quality by 1 when sellIn > 10", () => {
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(21);
+      expect(items[0].sellIn).toBe(14);
+    });
+
+    it("Backstage passes should increase in quality by 2 when 10 >= sellIn > 5", () => {
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", 10, 25),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(27);
+      expect(items[0].sellIn).toBe(9);
+    });
+
+    it("Backstage passes should increase in quality by 3 when 5 >= sellIn > 0", () => {
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", 5, 30),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(33);
+      expect(items[0].sellIn).toBe(4);
+    });
+
+    it("Backstage passes should drop quality to 0 after concert", () => {
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", 0, 40),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(0);
+      expect(items[0].sellIn).toBe(-1);
+    });
+
+    it("Quality never exceeds 50 even with Backstage passes", () => {
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
+      ]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(50); // pas 52
+    });
+  });
+});
+
