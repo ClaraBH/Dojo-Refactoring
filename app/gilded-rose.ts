@@ -11,9 +11,8 @@ export class Item {
 
   updateQuality(amount: number) {
     //amount can be positive and negative
-    this.quality = this.quality + amount
+    this.quality = this.quality + amount;
   }
-
 
   updateItemQualityAndSellIn() {
     if (
@@ -65,6 +64,26 @@ export class Item {
   }
 }
 
+export class NormalItem extends Item {
+  constructor(sellIn, quality) {
+    super("Normal Item", sellIn, quality);
+  }
+
+  updateNormalItemQualityAndSellIn() {
+    this.sellIn = this.sellIn - 1;
+
+    if (this.quality > 0) {
+      this.updateQuality(-1);
+    }
+
+    if (this.sellIn < 0) {
+      if (this.quality > 0) {
+        this.updateQuality(-1);
+      }
+    }
+  }
+}
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -74,7 +93,11 @@ export class GildedRose {
 
   updateQuality() {
     this.items.map((item: Item) => {
-      item.updateItemQualityAndSellIn();
+      if (item instanceof NormalItem) {
+        item.updateNormalItemQualityAndSellIn();
+      } else {
+        item.updateItemQualityAndSellIn();
+      }
     });
     return this.items;
   }

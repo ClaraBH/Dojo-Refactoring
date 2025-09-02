@@ -1,4 +1,4 @@
-import { GildedRose, Item } from "../app/gilded-rose";
+import { GildedRose, Item, NormalItem } from "../app/gilded-rose";
 
 describe("Initial Test", () => {
   it("should foo", () => {
@@ -23,27 +23,27 @@ describe("GildedRose", () => {
 
   describe("Normal Item", () => {
     it("should decrease quality and sellIn for normal items", () => {
-      const gildedRose = new GildedRose([new Item("Normal Item", 10, 20)]);
+      const gildedRose = new GildedRose([new NormalItem(10, 20)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(19);
       expect(items[0].sellIn).toBe(9);
     });
 
     it("should not decrease quality below 0", () => {
-      const gildedRose = new GildedRose([new Item("Normal Item", 5, 0)]);
+      const gildedRose = new GildedRose([new NormalItem(5, 0)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(0);
     });
 
     it("Normal items degrade twice as fast after sellIn <= 0", () => {
-      const gildedRose = new GildedRose([new Item("Normal Item", 0, 10)]);
+      const gildedRose = new GildedRose([new NormalItem(0, 10)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(8);
       expect(items[0].sellIn).toBe(-1);
     });
 
     it("Normal items'quality decreae of 2 if sellIn < 0 ", () => {
-      const gildedRose = new GildedRose([new Item("Normal Item", -1, 10)]);
+      const gildedRose = new GildedRose([new NormalItem(-1, 10)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(8);
       expect(items[0].sellIn).toBe(-2);
@@ -129,7 +129,9 @@ describe("GildedRose", () => {
     });
 
     it("Backstage items'quality becomes 0 if sellIn < 0 ", () => {
-      const gildedRose = new GildedRose([new Item("Backstage passes to a TAFKAL80ETC concert", -1, 10)]);
+      const gildedRose = new GildedRose([
+        new Item("Backstage passes to a TAFKAL80ETC concert", -1, 10),
+      ]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(0);
       expect(items[0].sellIn).toBe(-2);
