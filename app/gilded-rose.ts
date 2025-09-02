@@ -9,6 +9,11 @@ export class Item {
     this.quality = quality;
   }
 
+  updateQuality(amount: number) {
+    //amount can be positive and negative
+    this.quality = this.quality + amount
+  }
+
 
   updateItemQualityAndSellIn() {
     if (
@@ -17,21 +22,21 @@ export class Item {
     ) {
       if (this.quality > 0) {
         if (this.name != "Sulfuras, Hand of Ragnaros") {
-          this.quality = this.quality - 1;
+          this.updateQuality(-1);
         }
       }
     } else {
       if (this.quality < 50) {
-        this.quality = this.quality + 1;
+        this.updateQuality(1);
         if (this.name == "Backstage passes to a TAFKAL80ETC concert") {
           if (this.sellIn < 11) {
             if (this.quality < 50) {
-              this.quality = this.quality + 1;
+              this.updateQuality(1);
             }
           }
           if (this.sellIn < 6) {
             if (this.quality < 50) {
-              this.quality = this.quality + 1;
+              this.updateQuality(1);
             }
           }
         }
@@ -45,7 +50,7 @@ export class Item {
         if (this.name != "Backstage passes to a TAFKAL80ETC concert") {
           if (this.quality > 0) {
             if (this.name != "Sulfuras, Hand of Ragnaros") {
-              this.quality = this.quality - 1;
+              this.updateQuality(-1);
             }
           }
         } else {
@@ -53,7 +58,7 @@ export class Item {
         }
       } else {
         if (this.quality < 50) {
-          this.quality = this.quality + 1;
+          this.updateQuality(1);
         }
       }
     }
