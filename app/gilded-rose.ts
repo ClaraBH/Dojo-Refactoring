@@ -9,7 +9,8 @@ export class Item {
     this.quality = quality;
   }
 
-  updateItemQuality() {
+
+  updateItemQualityAndSellIn() {
     if (
       this.name != "Aged Brie" &&
       this.name != "Backstage passes to a TAFKAL80ETC concert"
@@ -68,8 +69,8 @@ export class GildedRose {
 
   updateQuality() {
     this.items.map((item: Item) => {
-      item.updateItemQuality();
+      item.updateItemQualityAndSellIn();
     });
-    return this.items
+    return this.items;
   }
 }
