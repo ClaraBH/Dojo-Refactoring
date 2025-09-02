@@ -104,6 +104,22 @@ export class AgedBrieItem extends Item {
   }
 }
 
+export class SulfurasItem extends Item {
+  constructor(sellIn, quality) {
+    super("Sulfuras, Hand of Ragnaros", sellIn, quality);
+  }
+
+  updateSulfurasItemQualityAndSellIn() {
+    if (this.sellIn < 0) {
+      if (this.quality > 0) {
+        if (this.name != "Sulfuras, Hand of Ragnaros") {
+          this.updateQuality(-1);
+        }
+      }
+    }
+  }
+}
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -117,6 +133,8 @@ export class GildedRose {
         item.updateNormalItemQualityAndSellIn();
       } else if (item instanceof AgedBrieItem) {
         item.updateAgedBrieItemQualityAndSellIn();
+      } else if (item instanceof SulfurasItem) {
+        item.updateSulfurasItemQualityAndSellIn();
       } else {
         item.updateItemQualityAndSellIn();
       }

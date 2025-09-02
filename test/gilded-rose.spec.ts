@@ -1,4 +1,10 @@
-import { AgedBrieItem, GildedRose, Item, NormalItem } from "../app/gilded-rose";
+import {
+  AgedBrieItem,
+  GildedRose,
+  Item,
+  NormalItem,
+  SulfurasItem,
+} from "../app/gilded-rose";
 
 describe("Initial Test", () => {
   it("should foo", () => {
@@ -74,9 +80,7 @@ describe("GildedRose", () => {
 
   describe("Sulfuras", () => {
     it("Sulfuras should not decrease in quality or sellIn", () => {
-      const gildedRose = new GildedRose([
-        new Item("Sulfuras, Hand of Ragnaros", 0, 80),
-      ]);
+      const gildedRose = new GildedRose([new SulfurasItem(0, 80)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(80);
       expect(items[0].sellIn).toBe(0);
