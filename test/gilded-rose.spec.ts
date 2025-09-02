@@ -8,8 +8,19 @@ describe("Initial Test", () => {
   });
 });
 
-
 describe("GildedRose", () => {
+  describe("Object construction", () => {
+    it("should construct the guiledRose inventory with an empty list of items", () => {
+      const gildedRose = new GildedRose();
+      expect(gildedRose.items.length).toBe(0);
+    });
+
+    it("should construct the guiledRose inventory with an non empty list of items", () => {
+      const gildedRose = new GildedRose([new Item("Normal Item", 5, 0)]);
+      expect(gildedRose.items.length).toBe(1);
+    });
+  });
+
   describe("Normal Item", () => {
     it("should decrease quality and sellIn for normal items", () => {
       const gildedRose = new GildedRose([new Item("Normal Item", 10, 20)]);
@@ -30,8 +41,15 @@ describe("GildedRose", () => {
       expect(items[0].quality).toBe(8);
       expect(items[0].sellIn).toBe(-1);
     });
+
+    it("Normal items'quality decreae of 2 if sellIn < 0 ", () => {
+      const gildedRose = new GildedRose([new Item("Normal Item", -1, 10)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(8);
+      expect(items[0].sellIn).toBe(-2);
+    });
   });
-  
+
   describe("Agent Brie", () => {
     it("Aged Brie should increase in quality", () => {
       const gildedRose = new GildedRose([new Item("Aged Brie", 2, 0)]);
@@ -109,6 +127,12 @@ describe("GildedRose", () => {
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(50); // pas 52
     });
+
+    it("Backstage items'quality becomes 0 if sellIn < 0 ", () => {
+      const gildedRose = new GildedRose([new Item("Backstage passes to a TAFKAL80ETC concert", -1, 10)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(0);
+      expect(items[0].sellIn).toBe(-2);
+    });
   });
 });
-
