@@ -120,6 +120,36 @@ export class SulfurasItem extends Item {
   }
 }
 
+export class BackstageItem extends Item {
+  constructor(sellIn, quality) {
+    super("Backstage passes to a TAFKAL80ETC concert", sellIn, quality);
+  }
+
+  updateBackstageItemQualityAndSellIn() {
+    if (this.quality < 50) {
+      this.updateQuality(1);
+      if (this.name == "Backstage passes to a TAFKAL80ETC concert") {
+        if (this.sellIn < 11) {
+          if (this.quality < 50) {
+            this.updateQuality(1);
+          }
+        }
+        if (this.sellIn < 6) {
+          if (this.quality < 50) {
+            this.updateQuality(1);
+          }
+        }
+      }
+    }
+
+    this.sellIn = this.sellIn - 1;
+
+    if (this.sellIn < 0) {
+      this.quality = this.quality - this.quality;
+    }
+  }
+}
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -135,6 +165,8 @@ export class GildedRose {
         item.updateAgedBrieItemQualityAndSellIn();
       } else if (item instanceof SulfurasItem) {
         item.updateSulfurasItemQualityAndSellIn();
+      } else if (item instanceof BackstageItem) {
+        item.updateBackstageItemQualityAndSellIn();
       } else {
         item.updateItemQualityAndSellIn();
       }

@@ -1,5 +1,6 @@
 import {
   AgedBrieItem,
+  BackstageItem,
   GildedRose,
   Item,
   NormalItem,
@@ -89,53 +90,41 @@ describe("GildedRose", () => {
 
   describe("Backstage", () => {
     it("Backstage passes should increase in quality by 1 when sellIn > 10", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(15, 20)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(21);
       expect(items[0].sellIn).toBe(14);
     });
 
     it("Backstage passes should increase in quality by 2 when 10 >= sellIn > 5", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", 10, 25),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(10, 25)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(27);
       expect(items[0].sellIn).toBe(9);
     });
 
     it("Backstage passes should increase in quality by 3 when 5 >= sellIn > 0", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", 5, 30),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(5, 30)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(33);
       expect(items[0].sellIn).toBe(4);
     });
 
     it("Backstage passes should drop quality to 0 after concert", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", 0, 40),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(0, 40)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(0);
       expect(items[0].sellIn).toBe(-1);
     });
 
     it("Quality never exceeds 50 even with Backstage passes", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(5, 49)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(50); // pas 52
     });
 
     it("Backstage items'quality becomes 0 if sellIn < 0 ", () => {
-      const gildedRose = new GildedRose([
-        new Item("Backstage passes to a TAFKAL80ETC concert", -1, 10),
-      ]);
+      const gildedRose = new GildedRose([new BackstageItem(-1, 10)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(0);
       expect(items[0].sellIn).toBe(-2);
