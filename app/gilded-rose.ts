@@ -15,52 +15,7 @@ export class Item {
   }
 
   updateItemQualityAndSellIn() {
-    if (
-      this.name != "Aged Brie" &&
-      this.name != "Backstage passes to a TAFKAL80ETC concert"
-    ) {
-      if (this.quality > 0) {
-        if (this.name != "Sulfuras, Hand of Ragnaros") {
-          this.updateQuality(-1);
-        }
-      }
-    } else {
-      if (this.quality < 50) {
-        this.updateQuality(1);
-        if (this.name == "Backstage passes to a TAFKAL80ETC concert") {
-          if (this.sellIn < 11) {
-            if (this.quality < 50) {
-              this.updateQuality(1);
-            }
-          }
-          if (this.sellIn < 6) {
-            if (this.quality < 50) {
-              this.updateQuality(1);
-            }
-          }
-        }
-      }
-    }
-    if (this.name != "Sulfuras, Hand of Ragnaros") {
-      this.sellIn = this.sellIn - 1;
-    }
-    if (this.sellIn < 0) {
-      if (this.name != "Aged Brie") {
-        if (this.name != "Backstage passes to a TAFKAL80ETC concert") {
-          if (this.quality > 0) {
-            if (this.name != "Sulfuras, Hand of Ragnaros") {
-              this.updateQuality(-1);
-            }
-          }
-        } else {
-          this.quality = this.quality - this.quality;
-        }
-      } else {
-        if (this.quality < 50) {
-          this.updateQuality(1);
-        }
-      }
-    }
+    //add code here for common behavior to all subclasses
   }
 }
 
@@ -69,7 +24,7 @@ export class NormalItem extends Item {
     super("Normal Item", sellIn, quality);
   }
 
-  updateNormalItemQualityAndSellIn() {
+  updateItemQualityAndSellIn() {
     this.sellIn = this.sellIn - 1;
 
     if (this.quality > 0) {
@@ -89,7 +44,7 @@ export class AgedBrieItem extends Item {
     super("Aged Brie", sellIn, quality);
   }
 
-  updateAgedBrieItemQualityAndSellIn() {
+  updateItemQualityAndSellIn() {
     if (this.quality < 50) {
       this.updateQuality(1);
     }
@@ -109,7 +64,7 @@ export class SulfurasItem extends Item {
     super("Sulfuras, Hand of Ragnaros", sellIn, quality);
   }
 
-  updateSulfurasItemQualityAndSellIn() {
+  updateItemQualityAndSellIn() {
     if (this.sellIn < 0) {
       if (this.quality > 0) {
         if (this.name != "Sulfuras, Hand of Ragnaros") {
@@ -125,7 +80,7 @@ export class BackstageItem extends Item {
     super("Backstage passes to a TAFKAL80ETC concert", sellIn, quality);
   }
 
-  updateBackstageItemQualityAndSellIn() {
+  updateItemQualityAndSellIn() {
     if (this.quality < 50) {
       this.updateQuality(1);
       if (this.name == "Backstage passes to a TAFKAL80ETC concert") {
@@ -159,17 +114,7 @@ export class GildedRose {
 
   updateQuality() {
     this.items.map((item: Item) => {
-      if (item instanceof NormalItem) {
-        item.updateNormalItemQualityAndSellIn();
-      } else if (item instanceof AgedBrieItem) {
-        item.updateAgedBrieItemQualityAndSellIn();
-      } else if (item instanceof SulfurasItem) {
-        item.updateSulfurasItemQualityAndSellIn();
-      } else if (item instanceof BackstageItem) {
-        item.updateBackstageItemQualityAndSellIn();
-      } else {
-        item.updateItemQualityAndSellIn();
-      }
+      item.updateItemQualityAndSellIn();
     });
     return this.items;
   }
