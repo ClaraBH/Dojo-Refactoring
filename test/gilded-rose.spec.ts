@@ -1,4 +1,4 @@
-import { GildedRose, Item, NormalItem } from "../app/gilded-rose";
+import { AgedBrieItem, GildedRose, Item, NormalItem } from "../app/gilded-rose";
 
 describe("Initial Test", () => {
   it("should foo", () => {
@@ -52,20 +52,20 @@ describe("GildedRose", () => {
 
   describe("Agent Brie", () => {
     it("Aged Brie should increase in quality", () => {
-      const gildedRose = new GildedRose([new Item("Aged Brie", 2, 0)]);
+      const gildedRose = new GildedRose([new AgedBrieItem(2, 0)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(1);
       expect(items[0].sellIn).toBe(1);
     });
 
     it("Aged Brie should not increase quality above 50", () => {
-      const gildedRose = new GildedRose([new Item("Aged Brie", 2, 50)]);
+      const gildedRose = new GildedRose([new AgedBrieItem(2, 50)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(50);
     });
 
     it("Aged Brie increases faster after expiration", () => {
-      const gildedRose = new GildedRose([new Item("Aged Brie", 0, 10)]);
+      const gildedRose = new GildedRose([new AgedBrieItem(0, 10)]);
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(12); // +2 car expiré
       expect(items[0].sellIn).toBe(-1);

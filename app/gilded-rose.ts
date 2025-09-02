@@ -84,6 +84,26 @@ export class NormalItem extends Item {
   }
 }
 
+export class AgedBrieItem extends Item {
+  constructor(sellIn, quality) {
+    super("Aged Brie", sellIn, quality);
+  }
+
+  updateAgedBrieItemQualityAndSellIn() {
+    if (this.quality < 50) {
+      this.updateQuality(1);
+    }
+
+    this.sellIn = this.sellIn - 1;
+
+    if (this.sellIn < 0) {
+      if (this.quality < 50) {
+        this.updateQuality(1);
+      }
+    }
+  }
+}
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -95,6 +115,8 @@ export class GildedRose {
     this.items.map((item: Item) => {
       if (item instanceof NormalItem) {
         item.updateNormalItemQualityAndSellIn();
+      } else if (item instanceof AgedBrieItem) {
+        item.updateAgedBrieItemQualityAndSellIn();
       } else {
         item.updateItemQualityAndSellIn();
       }
